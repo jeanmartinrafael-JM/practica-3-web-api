@@ -1,55 +1,51 @@
-using ReservaCitasMedicasJ.Modules.Citas.Entities;
 using ReservaCitasMedicasJ.Modules.Citas.Dtos;
+using ReservaCitasMedicasJ.Modules.Citas.Entities;
+using ReservaCitasMedicasJ.Modules.Citas.Repositories;
 
-namespace ReservaCitasMedicasJ.Modules.Citas.Services
+namespace ReservaCitasMedicasJ.Modules.Citas.Services;
+
+public class CitasService(CitasRepository citasRepository)
 {
-    public class CitasService
+    private readonly CitasRepository _repository = citasRepository;
+
+    public List<Cita> FindAll()
     {
-        private readonly List<Cita> _citas = new();
+        return _repository.FindAll();
+    }
 
-        public List<Cita> ObtenerTodos()
+    public Cita? FindOne(int id)
+    {
+        return _repository.FindOne(id);
+    }
+
+    public Cita Create(CrearCitaDto dto)
+    {
+        Cita cita = new()
         {
-            return _citas;
-        }
+            Paciente = dto.Paciente,
+            Doctor = dto.Doctor,
+            Fecha = dto.Fecha,
+            Motivo = dto.Motivo
+        };
+        return _repository.Create(cita);
+    }
 
-        public Cita? ObtenerPorId(Guid id)
-        {
-            return _citas.FirstOrDefault(c => c.Id == id);
-        }
+    public Cita? Update(int id, ActualizarCitaDto dto)
+    {
+        Cita? cita = FindOne(id);
+        if (cita is null) return null;
 
-        public Cita Crear(CrearCitaDto dto)
-        {
-            var cita = new Cita
-            {
-                Paciente = dto.Paciente,
-                Doctor = dto.Doctor,
-                Fecha = dto.Fecha,
-                Motivo = dto.Motivo
-            };
-            _citas.Add(cita);
-            return cita;
-        }
+        if (dto.Paciente is not null) cita.Paciente = dto.Paciente;
+        if (dto.Doctor is not null) cita.Doctor = dto.Doctor;
+        if (dto.Fecha is not null) cita.Fecha = dto.Fecha.Value;
+        if (dto.Motivo is not null) cita.Motivo = dto.Motivo;
+        if (dto.Estado is not null) cita.Estado = dto.Estado;
 
-        public Cita? Actualizar(Guid id, ActualizarCitaDto dto)
-        {
-            var cita = _citas.FirstOrDefault(c => c.Id == id);
-            if (cita is null) return null;
+        return _repository.Update(cita);
+    }
 
-            if (dto.Paciente is not null) cita.Paciente = dto.Paciente;
-            if (dto.Doctor is not null) cita.Doctor = dto.Doctor;
-            if (dto.Fecha is not null) cita.Fecha = dto.Fecha.Value;
-            if (dto.Motivo is not null) cita.Motivo = dto.Motivo;
-            if (dto.Estado is not null) cita.Estado = dto.Estado;
-
-            return cita;
-        }
-
-        public bool Eliminar(Guid id)
-        {
-            var cita = _citas.FirstOrDefault(c => c.Id == id);
-            if (cita is null) return false;
-            _citas.Remove(cita);
-            return true;
-        }
+    public bool Delete(int id)
+    {
+        return _repository.Delete(id);
     }
 }

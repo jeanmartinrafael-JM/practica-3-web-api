@@ -1,12 +1,11 @@
-namespace ReservaCitasMedicasJ.Modules.Citas.Entities
+namespace ReservaCitasMedicasJ.Modules.Citas.Entities;
+
+public class Cita
 {
-    public class Cita
-    {
-        public Guid Id { get; set; } = Guid.NewGuid();
-        public string Paciente { get; set; } = string.Empty;
-        public string Doctor { get; set; } = string.Empty;
-        public DateTime Fecha { get; set; }
-        public string Motivo { get; set; } = string.Empty;
-        public string Estado { get; set; } = "pendiente";
-    }
+    public int Id { get; set; }
+    public required string Paciente { get; set; }
+    public required string Doctor { get; set; }
+    public DateTime Fecha { get; set; }
+    public required string Motivo { get; set; }
+    public string Estado { get; set; } = "pendiente";
 }

@@ -1,13 +1,14 @@
+using ReservaCitasMedicasJ.Modules.Citas.Repositories;
 using ReservaCitasMedicasJ.Modules.Citas.Services;
 
-namespace ReservaCitasMedicasJ.Modules.Citas
+namespace ReservaCitasMedicasJ.Modules.Citas;
+
+public static class CitasModule
 {
-    public static class CitasModule
+    public static IServiceCollection AddCitasModule(this IServiceCollection services)
     {
-        public static IServiceCollection AddCitasModule(this IServiceCollection services)
-        {
-            services.AddSingleton<CitasService>();
-            return services;
-        }
+        services.AddScoped<CitasService>();
+        services.AddScoped<CitasRepository>();
+        return services;
     }
 }
