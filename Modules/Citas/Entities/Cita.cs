@@ -8,4 +8,4 @@ public class Cita
     public DateTime Fecha { get; set; }
     public required string Motivo { get; set; }
     public string Estado { get; set; } = "pendiente";
-}
+} 
