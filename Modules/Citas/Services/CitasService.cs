@@ -22,10 +22,10 @@ public class CitasService(CitasRepository citasRepository)
     {
         Cita cita = new()
         {
-            Paciente = dto.Paciente,
             Doctor = dto.Doctor,
             Fecha = dto.Fecha,
-            Motivo = dto.Motivo
+            Motivo = dto.Motivo,
+            PacienteId = dto.PacienteId
         };
         return _repository.Create(cita);
     }
@@ -35,11 +35,11 @@ public class CitasService(CitasRepository citasRepository)
         Cita? cita = FindOne(id);
         if (cita is null) return null;
 
-        if (dto.Paciente is not null) cita.Paciente = dto.Paciente;
         if (dto.Doctor is not null) cita.Doctor = dto.Doctor;
         if (dto.Fecha is not null) cita.Fecha = dto.Fecha.Value;
         if (dto.Motivo is not null) cita.Motivo = dto.Motivo;
         if (dto.Estado is not null) cita.Estado = dto.Estado;
+        if (dto.PacienteId is not null) cita.PacienteId = dto.PacienteId.Value;
 
         return _repository.Update(cita);
     }

@@ -1,10 +1,10 @@
-namespace ReservaCitasMedicasJ.Modules.Citas.Dtos
+
+namespace ReservaCitasMedicasJ.Modules.Citas.Dtos;
+
+public class CrearCitaDto
 {
-    public class CrearCitaDto
-    {
-        public string Paciente { get; set; } = string.Empty;
-        public string Doctor { get; set; } = string.Empty;
-        public DateTime Fecha { get; set; }
-        public string Motivo { get; set; } = string.Empty;
-    }
+    public required string Doctor { get; set; }
+    public DateTime Fecha { get; set; }
+    public required string Motivo { get; set; }
+    public int PacienteId { get; set; }
 }

@@ -29,10 +29,10 @@ public class CitasController(CitasService citasService) : ControllerBase
     [HttpPost]
     public IActionResult Create([FromBody] CrearCitaDto dto)
     {
-        if (string.IsNullOrWhiteSpace(dto.Paciente) ||
-            string.IsNullOrWhiteSpace(dto.Doctor) ||
-            string.IsNullOrWhiteSpace(dto.Motivo))
-            return BadRequest(new { Message = "Los campos Paciente, Doctor y Motivo son obligatorios." });
+        if (string.IsNullOrWhiteSpace(dto.Doctor) ||
+            string.IsNullOrWhiteSpace(dto.Motivo) ||
+            dto.PacienteId == 0)
+            return BadRequest(new { Message = "Los campos Doctor, Motivo y PacienteId son obligatorios." });
 
         return Ok(_service.Create(dto));
     }
@@ -40,8 +40,8 @@ public class CitasController(CitasService citasService) : ControllerBase
     [HttpPatch("{id}")]
     public IActionResult Update(int id, [FromBody] ActualizarCitaDto dto)
     {
-        if (dto.Paciente is null && dto.Doctor is null &&
-            dto.Fecha is null && dto.Motivo is null && dto.Estado is null)
+        if (dto.Doctor is null && dto.Fecha is null &&
+            dto.Motivo is null && dto.Estado is null && dto.PacienteId is null)
             return BadRequest(new { Message = "Debe enviar al menos un campo para actualizar." });
 
         Cita? cita = _service.Update(id, dto);

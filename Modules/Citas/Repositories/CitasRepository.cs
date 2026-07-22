@@ -1,5 +1,5 @@
+using Microsoft.EntityFrameworkCore;
 using ReservaCitasMedicasJ.Data;
-using ReservaCitasMedicasJ.Modules.Citas.Dtos;
 using ReservaCitasMedicasJ.Modules.Citas.Entities;
 
 namespace ReservaCitasMedicasJ.Modules.Citas.Repositories;
@@ -10,19 +10,24 @@ public class CitasRepository(AppDbContext appDbContext)
 
     public List<Cita> FindAll()
     {
-        return _context.Citas.ToList();
+        return _context.Citas
+            .Include(c => c.Paciente)
+            .ToList();
     }
 
     public Cita? FindOne(int id)
     {
-        return _context.Citas.FirstOrDefault(c => c.Id == id);
+        return _context.Citas
+            .Include(c => c.Paciente)
+            .FirstOrDefault(c => c.Id == id);
     }
 
     public Cita Create(Cita cita)
     {
-        _context.Citas.Add(cita);
-        _context.SaveChanges();
-        return cita;
+      _context.Citas.Add(cita);
+      _context.SaveChanges();
+      _context.Entry(cita).Reference(c => c.Paciente).Load();
+      return cita;
     }
 
     public Cita Update(Cita cita)
